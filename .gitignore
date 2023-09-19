@@ -10,10 +10,7 @@
 /ZeppelinRemoteNotebooks/
 
 # intelliJ
-/misc.xml
-/modules.xml
-/translator.iml
-/vcs.xml
+.idea
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
