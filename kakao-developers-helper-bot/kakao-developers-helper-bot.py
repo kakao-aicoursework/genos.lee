@@ -11,6 +11,16 @@ from pynecone.base import Base
 
 # openai.api_key = "<YOUR_OPENAI_API_KEY>"
 
+def load_data() -> str:
+    path = './data/kakao_sync.txt'
+    f = open(path, 'r')
+    lines = f.readlines()
+    return ''.join(lines)
+
+
+data = load_data()
+
+
 def ask_to_bot(text):
     return text
 
