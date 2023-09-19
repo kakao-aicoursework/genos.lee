@@ -8,8 +8,19 @@ from datetime import datetime
 import pynecone as pc
 from pynecone.base import Base
 
+from langchain import LLMChain
+from langchain.chat_models import ChatOpenAI
+from langchain.prompts.chat import (
+    ChatPromptTemplate,
+    HumanMessagePromptTemplate,
+)
+from langchain.schema import (
+    SystemMessage
+)
 
-# openai.api_key = "<YOUR_OPENAI_API_KEY>"
+
+os.environ["OPENAI_API_KEY"] = ""
+
 
 def load_data() -> str:
     path = './data/kakao_sync.txt'
@@ -20,9 +31,25 @@ def load_data() -> str:
 
 data = load_data()
 
+chat = ChatOpenAI(temperature=1.0, model_name='gpt-3.5-turbo-16k')
+system_message = "assistant는 정보 제공 도우미로 동작한다. user의 아래 정보를 참고하여 질문에 답해라"
+system_message_prompt = SystemMessage(content=system_message)
+
+human_template = ("질문: {question}\n"
+                  "정보: " + data + "\n"
+                  )
+
+human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
+chat_prompt = ChatPromptTemplate.from_messages([system_message_prompt, human_message_prompt])
+
+chain = LLMChain(llm=chat, prompt=chat_prompt)
+
 
 def ask_to_bot(text):
-    return text
+    answer = chain.run(question=text)
+    # answer = answer.replace('\n', '<br>')
+    # print(answer)
+    return answer
 
 
 class Qa(Base):
@@ -36,23 +63,23 @@ class State(pc.State):
 
     question: str = ""
     qas: list[Qa] = []
+    is_working: bool = False
 
-    @pc.var
-    def output(self) -> str:
+    async def post(self):
+        self.is_working = True
+        yield
         if not self.question.strip():
-            return ""
-        return ask_to_bot(self.question)
-
-    def post(self):
-        if not self.question.strip():
+            self.is_working = False
             return
+        answer = ask_to_bot(self.question)
         self.qas = [
             Qa(
                 question=self.question,
-                answer=self.output,
+                answer=answer,
                 created_at=datetime.now().strftime("%B %d, %Y %I:%M %p"),
             )
         ] + self.qas
+        self.is_working = False
 
 
 # Define views.
@@ -147,6 +174,13 @@ def index():
         ),
         pc.button("Post", on_click=State.post, margin_top="1rem"),
         pc.vstack(
+            pc.cond(State.is_working,
+                    pc.spinner(
+                        color="lightgreen",
+                        thickness=5,
+                        speed="1.5s",
+                        size="xl",
+                    ),),
             pc.foreach(State.qas, qa),
             margin_top="2rem",
             spacing="1rem",
