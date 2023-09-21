@@ -19,7 +19,7 @@ from langchain.schema import (
 )
 
 
-os.environ["OPENAI_API_KEY"] = ""
+# os.environ["OPENAI_API_KEY"] = ""
 
 
 def load_data() -> str:
