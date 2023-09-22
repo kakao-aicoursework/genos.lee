@@ -19,9 +19,6 @@ from langchain.schema import (
 )
 
 
-# os.environ["OPENAI_API_KEY"] = ""
-
-
 def load_data() -> str:
     path = './data/kakao_sync.txt'
     f = open(path, 'r')
@@ -73,12 +70,12 @@ class State(pc.State):
             return
         answer = ask_to_bot(self.question)
         self.qas = [
-            Qa(
-                question=self.question,
-                answer=answer,
-                created_at=datetime.now().strftime("%B %d, %Y %I:%M %p"),
-            )
-        ] + self.qas
+                       Qa(
+                           question=self.question,
+                           answer=answer,
+                           created_at=datetime.now().strftime("%B %d, %Y %I:%M %p"),
+                       )
+                   ] + self.qas
         self.is_working = False
 
 
