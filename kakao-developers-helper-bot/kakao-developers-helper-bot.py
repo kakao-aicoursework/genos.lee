@@ -44,8 +44,6 @@ chain = LLMChain(llm=chat, prompt=chat_prompt)
 
 def ask_to_bot(text):
     answer = chain.run(question=text)
-    # answer = answer.replace('\n', '<br>')
-    # print(answer)
     return answer
 
 
@@ -124,38 +122,6 @@ def qa(qa):
         background_color="#f5f5f5",
         padding="1rem",
         border_radius="8px",
-    )
-
-
-def smallcaps(text, **kwargs):
-    return pc.text(
-        text,
-        font_size="0.7rem",
-        font_weight="bold",
-        text_transform="uppercase",
-        letter_spacing="0.05rem",
-        **kwargs,
-    )
-
-
-def output():
-    return pc.box(
-        pc.box(
-            smallcaps(
-                "Output",
-                color="#aeaeaf",
-                background_color="white",
-                padding_x="0.1rem",
-            ),
-            position="absolute",
-            top="-0.5rem",
-        ),
-        pc.text(State.output),
-        padding="1rem",
-        border="1px solid #eaeaef",
-        margin_top="1rem",
-        border_radius="8px",
-        position="relative",
     )
 
 
