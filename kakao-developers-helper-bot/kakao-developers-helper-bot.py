@@ -1,50 +1,11 @@
 """Welcome to Pynecone! This file outlines the steps to create a basic app."""
 
 # Import pynecone.
-import openai
-import os
 from datetime import datetime
 
 import pynecone as pc
 from pynecone.base import Base
-
-from langchain import LLMChain
-from langchain.chat_models import ChatOpenAI
-from langchain.prompts.chat import (
-    ChatPromptTemplate,
-    HumanMessagePromptTemplate,
-)
-from langchain.schema import (
-    SystemMessage
-)
-
-
-def load_data() -> str:
-    path = './data/kakao_sync.txt'
-    f = open(path, 'r')
-    lines = f.readlines()
-    return ''.join(lines)
-
-
-data = load_data()
-
-chat = ChatOpenAI(temperature=1.0, model_name='gpt-3.5-turbo-16k')
-system_message = "assistant는 정보 제공 도우미로 동작한다. user의 아래 정보를 참고하여 질문에 답해라"
-system_message_prompt = SystemMessage(content=system_message)
-
-human_template = ("질문: {question}\n"
-                  "정보: " + data + "\n"
-                  )
-
-human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
-chat_prompt = ChatPromptTemplate.from_messages([system_message_prompt, human_message_prompt])
-
-chain = LLMChain(llm=chat, prompt=chat_prompt)
-
-
-def ask_to_bot(text):
-    answer = chain.run(question=text)
-    return answer
+from ai import ask_to_bot
 
 
 class Qa(Base):
@@ -143,7 +104,7 @@ def index():
                         thickness=5,
                         speed="1.5s",
                         size="xl",
-                    ),),
+                    ), ),
             pc.foreach(State.qas, qa),
             margin_top="2rem",
             spacing="1rem",
