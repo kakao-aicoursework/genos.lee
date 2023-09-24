@@ -1,0 +1,9 @@
+<info>
+{related_documents}
+</info>
+
+<question>
+{user_question}
+</question>
+
+info를 참고해서 question에 있는 질문에 답해줘.
