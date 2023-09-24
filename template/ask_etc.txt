@@ -1,0 +1,5 @@
+<question>
+{user_question}
+</question>
+
+알고 있는 정보를 참고해서 question에 있는 질문에 답해줘.
