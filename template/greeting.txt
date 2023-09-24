@@ -1,0 +1,9 @@
+message에 나온 인사에 답하는 인사를 하고 footer에 나온 내용을 읽어줘.
+
+<message>
+{user_message}
+</message>
+
+<footer>
+카카오와 관련해서 궁금한 점이 있으신가요?
+</footer>
