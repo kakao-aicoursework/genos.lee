@@ -1,5 +1,6 @@
 import os
 
+from ai_memory import get_chat_history
 from langchain.chains import LLMChain
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts.chat import ChatPromptTemplate
@@ -18,7 +19,9 @@ intent_chain = LLMChain(
 
 
 def parse_intent(user_message: str) -> str:
-    intent = intent_chain.run(dict(user_message=user_message))
+    intent = intent_chain.run(dict(user_message=user_message,
+                                   chat_history=get_chat_history()
+                                   ))
     print(intent)
     return intent
 

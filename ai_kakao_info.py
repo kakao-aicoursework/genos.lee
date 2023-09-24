@@ -4,6 +4,7 @@ from langchain.prompts.chat import (
     ChatPromptTemplate,
 )
 from ai_template import *
+from ai_memory import get_chat_history
 import requests
 import json
 
@@ -35,7 +36,10 @@ def answer_for_kakao(question):
     if len(docs) == 0:
         return '카카오와 관련된 정보를 찾을 수 없습니다.'
 
-    answer = ask_chain.run(dict(related_documents=docs, user_question=question))
+    answer = ask_chain.run(dict(related_documents=docs,
+                                user_question=question,
+                                chat_history=get_chat_history()
+                                ))
     print(answer)
     return answer
 

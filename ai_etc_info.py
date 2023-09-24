@@ -1,3 +1,4 @@
+from ai_memory import get_chat_history
 from langchain import LLMChain
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts.chat import (
@@ -18,7 +19,9 @@ ask_chain = LLMChain(
 
 
 def answer_for_etc(question):
-    answer = ask_chain.run(dict(user_question=question))
+    answer = ask_chain.run(dict(user_question=question,
+                                chat_history=get_chat_history()
+                                ))
     print(answer)
     return answer
 
