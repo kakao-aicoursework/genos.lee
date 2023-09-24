@@ -1,0 +1,17 @@
+message의 의도를 meaning을 참고해서 분석하고, intent에 있는 단어 중 하나로 선택해서 단어만 말해.
+
+<message>
+{user_message}
+</message>
+
+<meaning>
+인사: 안부를 묻는 말
+카정보: 카카오가 포함된 인사가 아닌 질문
+기타: 카정보와 인사가 아닌 말
+</meaning>
+
+<intent>
+인사
+카정보
+기타
+</intent>
